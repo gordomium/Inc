@@ -15,6 +15,11 @@ var incData = ["sdf ", [1, 52], [57, 3], [5, 5], [63, 7], "t", [12, 2], " sdfs",
 merge.setUrl('localhost');
 
 describe('Merge', function () {
+    before(function () {
+        merge.setUrl('https://f32.r.fe.dev.sankuai.com/');
+        merge.setCdnUrl('http://awp-assets.sankuai.com/inc/');
+    });
+
     beforeEach(function() {
         this.xhr = sinon.useFakeXMLHttpRequest();
 
@@ -36,8 +41,8 @@ describe('Merge', function () {
             });
 
             this.requests[0].respond(403, {
-                'Content-Type': 'text/json' 
-            }, JSON.stringify({}));
+                'Content-Type': 'application/text' 
+            }, '');
         });
 
         it('没有历史数据&全量', function (done) {
@@ -47,7 +52,7 @@ describe('Merge', function () {
             });
 
             this.requests[0].respond(200, {
-                'Content-Type': 'text/json' 
+                'Content-Type': 'application/text' 
             }, newConetnt);
         });
 
@@ -58,11 +63,8 @@ describe('Merge', function () {
             });
 
             this.requests[0].respond(200, {
-                'Content-Type': 'text/json' 
-            }, JSON.stringify({
-                code: 1,
-                data: JSON.stringify(incData)
-            }));
+                'Content-Type': 'application/text' 
+            }, JSON.stringify(incData) + '1');
         });
 
         it('没有变化', function (done) {
@@ -72,10 +74,8 @@ describe('Merge', function () {
             });
 
             this.requests[0].respond(200, {
-                'Content-Type': 'text/json' 
-            }, JSON.stringify({
-                code: 3
-            }));
+                'Content-Type': 'application/text' 
+            }, '3');
         });
     });
 });
